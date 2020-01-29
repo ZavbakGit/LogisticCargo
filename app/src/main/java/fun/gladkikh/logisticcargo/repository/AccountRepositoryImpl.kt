@@ -7,9 +7,6 @@ import java.util.*
 
 class AccountRepositoryImpl : AccountRepository {
     override fun login(password: String): Either<Failure, AccountEntity> {
-        return Either.Right(AccountEntity(id = "456", name = "Alex",password = password,userDate = Date() ))
+        return Either.Right(AccountEntity(id = "456", name = "Alex",password = password,date = Date() ))
     }
-
-
-
 }

@@ -1,10 +1,8 @@
 package `fun`.gladkikh.logisticcargo
 
-import `fun`.gladkikh.logisticcargo.di.ViewModuleScope
-import `fun`.gladkikh.logisticcargo.di.AppModule
-import `fun`.gladkikh.logisticcargo.di.RepositoryModule
-import `fun`.gladkikh.logisticcargo.di.ViewModelModule
+import `fun`.gladkikh.logisticcargo.di.*
 import `fun`.gladkikh.logisticcargo.domain.SettingsEntity
+import `fun`.gladkikh.logisticcargo.ui.core.RouteActivity
 import android.app.Application
 import android.content.Context
 import dagger.Component
@@ -38,10 +36,10 @@ class App : Application() {
 ////        return activityComponent
 //    }
 
-    fun initRepositoryComponent():RepositoryComponent{
-        val modul = RepositoryModule()
-        return appComponent.getRepositoryComponent(repositoryModule = modul)
-    }
+//    fun initRepositoryComponent():RepositoryComponent{
+//        val modul = RepositoryModule()
+//        //return appComponent.getRepositoryComponent(repositoryModule = modul)
+//    }
 
     private fun initAppComponent() {
         appComponent = DaggerAppComponent.builder()
@@ -54,14 +52,20 @@ class App : Application() {
 
 
 @Singleton
-@Component(modules = [AppModule::class,ViewModelModule::class])
+@Component(modules = [AppModule::class,
+    ViewModelModule::class,
+    RepositoryModule::class,
+    CacheModule::class])
 interface AppComponent {
-    fun getRepositoryComponent(repositoryModule: RepositoryModule):RepositoryComponent
-}
-
-@ViewModuleScope
-@Subcomponent(modules = [RepositoryModule::class])
-interface RepositoryComponent {
+    //fun getRepositoryComponent(repositoryModule: RepositoryModule):RepositoryComponent
     fun inject(mainActivity: MainActivity)
     fun inject(activity: SecondActivity)
+    fun inject(routeActivity: RouteActivity)
 }
+
+//@ViewModuleScope
+//@Subcomponent(modules = [RepositoryModule::class])
+//interface RepositoryComponent {
+//
+//
+//}

@@ -1,6 +1,8 @@
 package `fun`.gladkikh.logisticcargo.di
 
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 
@@ -12,4 +14,10 @@ class AppModule(private val context: Context) {
     @Provides
     @Singleton
     fun provideAppContext(): Context = context
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return GsonBuilder().create()
+    }
 }

@@ -6,8 +6,11 @@ import `fun`.gladkikh.common.ui.BaseActivity
 import `fun`.gladkikh.common.ui.ext.onEvent
 import `fun`.gladkikh.logisticcargo.domain.SettingsEntity
 import `fun`.gladkikh.logisticcargo.repository.AccountRepository
+import `fun`.gladkikh.logisticcargo.ui.core.RouteActivity
+import `fun`.gladkikh.logisticcargo.ui.preferences.SettingsActivity
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -25,7 +28,16 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.instance?.initRepositoryComponent()!!.inject(this)
+        //App.instance?.initRepositoryComponent()!!.inject(this)
+        App.appComponent.inject(this)
+
+        App.appContext()?.let {
+            Settings.Secure.getString(it.contentResolver, Settings.Secure.ANDROID_ID)
+        }
+
+
+
+
 
         accountRepository.login("111").map {
             it.toString()
@@ -42,10 +54,8 @@ class MainActivity : BaseActivity() {
         }
 
         btStartSecondActivity.setOnClickListener {
-            val i = Intent(baseContext, SecondActivity::class.java)
+            val i = Intent(baseContext, SettingsActivity::class.java)
             startActivity(i)
-            //mainViewModel.stop()
-
         }
 
     }

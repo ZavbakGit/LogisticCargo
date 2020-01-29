@@ -4,62 +4,58 @@ import `fun`.gladkikh.common.domain.type.Either
 import `fun`.gladkikh.common.domain.type.Failure
 import `fun`.gladkikh.common.domain.type.None
 import `fun`.gladkikh.logisticcargo.domain.AccountEntity
-import `fun`.gladkikh.logisticcargo.domain.failure.NoSavedAccountsError
+import `fun`.gladkikh.logisticcargo.domain.SettingsEntity
+import `fun`.gladkikh.logisticcargo.domain.failure.NoSavedAccountFailure
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import java.util.*
 import javax.inject.Inject
 
-class SharedPrefsManager @Inject constructor(private val prefs: SharedPreferences) {
+class SharedPrefsManager @Inject constructor(
+    private val prefs: SharedPreferences,
+    private val gson: Gson
+) {
     companion object {
-        const val ACCOUNT_ID = "account_id"
-        const val ACCOUNT_NAME = "account_name"
-        const val ACCOUNT_DATE = "account_date"
-        const val ACCOUNT_PASSWORD = "account_password"
+        const val HOST = "preference_host"
+        const val LOGIN_1C = "preference_login"
+        const val PASSWORD_1C = "preference_pass"
+        const val LIST_TSD = "list_tsd"
+
+        const val ACCOUNT = "account"
+
     }
 
+    fun getAccountEntity(): Either<Failure, AccountEntity> {
 
-    fun saveAccount(account: AccountEntity): Either<Failure, None> {
-        prefs.edit().apply {
-            putSafely(ACCOUNT_ID, account.id)
-            putSafely(ACCOUNT_NAME, account.name)
-            putSafely(ACCOUNT_DATE, account.userDate.time)
-            putSafely(ACCOUNT_PASSWORD, account.password)
-        }.apply()
+        val accountStr =
+            prefs.getString(ACCOUNT, null) ?: return Either.Left(NoSavedAccountFailure())
 
-        return Either.Right(None())
-    }
-
-    fun getAccount(): Either<Failure, AccountEntity> {
-        val id = prefs.getLong(ACCOUNT_ID, 0)
-
-        if (id == 0L) {
-            return Either.Left(NoSavedAccountsError())
-        }
-
-        val account = AccountEntity(
-            prefs.getString(ACCOUNT_ID, "") ?: "",
-            prefs.getString(ACCOUNT_NAME, "") ?: "",
-            Date(prefs.getLong(ACCOUNT_DATE, 0)),
-            prefs.getString(ACCOUNT_PASSWORD, "") ?: ""
-        )
-
+        val account = gson.fromJson(accountStr, AccountEntity::class.java)
         return Either.Right(account)
+
     }
 
-    fun removeAccount(): Either<Failure, None> {
+    fun saveAccountEntity(account: AccountEntity): Either<Failure, None> {
         prefs.edit().apply {
-            remove(ACCOUNT_ID)
-            remove(ACCOUNT_NAME)
-            remove(ACCOUNT_DATE)
-            remove(ACCOUNT_PASSWORD)
+            putSafely(ACCOUNT, gson.toJson(account))
         }.apply()
-
         return Either.Right(None())
     }
 
-    fun containsAnyAccount(): Either<Failure, Boolean> {
-        val id = prefs.getLong(ACCOUNT_ID, 0)
-        return Either.Right(id != 0L)
+    fun getSettings(): Either<Failure, SettingsEntity> {
+        val host = prefs.getString(HOST, null)
+        val login1C = prefs.getString(LOGIN_1C, null)
+        val password1C = prefs.getString(PASSWORD_1C, null)
+        val tsd = prefs.getString(LIST_TSD, 1.toString())?.toIntOrNull()
+
+        return Either.Right(
+            SettingsEntity(
+                host = host,
+                login1C = login1C,
+                date = Date(),
+                password1C = password1C
+            )
+        )
     }
 
 }

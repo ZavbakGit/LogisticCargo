@@ -61,6 +61,11 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:2.25.4"
     kapt "com.google.dagger:dagger-android-processor:2.25.4"
 
+    implementation "androidx.preference:preference-ktx:1.1.0"
+
+    implementation 'android.arch.navigation:navigation-fragment:1.0.0'
+    implementation 'android.arch.navigation:navigation-ui:1.0.0'
+
     implementation project(path: ':common')
     implementation project(path: ':remote')
 

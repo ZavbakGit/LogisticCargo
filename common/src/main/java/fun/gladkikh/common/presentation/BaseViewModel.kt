@@ -4,7 +4,7 @@ import `fun`.gladkikh.common.domain.type.Failure
 import `fun`.gladkikh.common.domain.type.SingleLiveEvent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlin.coroutines.CoroutineContext
+
 
 
 abstract class BaseViewModel : ViewModel() {

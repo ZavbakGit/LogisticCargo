@@ -13,7 +13,7 @@ class SecondActivity:BaseActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.instance?.initRepositoryComponent()!!.inject(this)
+        App.appComponent.inject(this)
 
         viewModel = viewModel {
             onEvent(message, ::handleMessage)
