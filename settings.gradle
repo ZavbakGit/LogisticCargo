@@ -1,0 +1,2 @@
+include ':app', ':common', ':domain', ':remote'
+rootProject.name='Logistic Cargo'
