@@ -8,5 +8,5 @@ import `fun`.gladkikh.remote.remote.entity.ResponseEntity
 
 
 interface RequestRemote {
-    fun request(user:String,password:String,request: String): Either<Failure, String>
+    fun request(user:String,password:String,data: String): Either<Failure, String>
 }

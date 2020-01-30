@@ -4,3 +4,4 @@ import `fun`.gladkikh.common.domain.type.Failure
 
 class NoSavedAccountFailure :Failure()
 class NoSavedSettingFailure :Failure()
+class JsonToObjectFailure(message:String) :Failure()

@@ -8,5 +8,5 @@ import `fun`.gladkikh.logisticcargo.domain.AccountEntity
 interface LoginRepository {
     fun getAccount():Either<Failure,AccountEntity>
     fun saveAccount(account:AccountEntity):Either<Failure, None>
-
+    fun login(password:String):Either<AccountEntity, None>
 }

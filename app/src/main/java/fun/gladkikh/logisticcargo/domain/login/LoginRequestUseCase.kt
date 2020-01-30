@@ -1,4 +1,4 @@
-package `fun`.gladkikh.logisticcargo
+package `fun`.gladkikh.logisticcargo.domain.login
 
 import `fun`.gladkikh.common.domain.interactor.UseCase
 import `fun`.gladkikh.common.domain.type.Either
@@ -8,7 +8,7 @@ import `fun`.gladkikh.remote.remote.RequestRemote
 import com.google.gson.GsonBuilder
 
 
-class TestRequestUseCase constructor(val requestRemote: RequestRemote) : UseCase<String, None>() {
+class LoginRequestUseCase constructor(val requestRemote: RequestRemote) : UseCase<String, None>() {
 
     override suspend fun run(params: None): Either<Failure, String> {
         val builder = GsonBuilder()

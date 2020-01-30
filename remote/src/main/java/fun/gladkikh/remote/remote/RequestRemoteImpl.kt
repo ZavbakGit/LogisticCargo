@@ -25,10 +25,10 @@ class RequestRemoteImpl constructor(
     override fun request(
         user: String,
         password: String,
-        requestStr: String
+        data: String
     ): Either<Failure, String> {
         val auth = AutorithationUtil.getStringAutorization(user, password)
-        return request.make(service.getDataFromServer(auth, RequestEntity(requestStr))) {
+        return request.make(service.getDataFromServer(auth, RequestEntity(data))) {
             it.data
         }
     }
