@@ -1,11 +1,12 @@
 package `fun`.gladkikh.logisticcargo.repository
 
-import `fun`.gladkikh.common.domain.type.*
+import `fun`.gladkikh.common.domain.type.Either
+import `fun`.gladkikh.common.domain.type.Failure
+import `fun`.gladkikh.common.domain.type.flatMap
 import `fun`.gladkikh.logisticcargo.domain.AccountEntity
 import `fun`.gladkikh.logisticcargo.domain.failure.JsonToObjectFailure
 import `fun`.gladkikh.remote.remote.RequestRemote
 import com.google.gson.Gson
-import java.util.*
 
 class AccountRepositoryImpl(
     private val settingsCache: SettingsCache,
@@ -16,13 +17,12 @@ class AccountRepositoryImpl(
 
     override fun login(password: String): Either<Failure, AccountEntity> {
 
-        val data = object {
-            val command = "login"
-            val password = password
-        }
-
         return settingsCache.getSettings().flatMap {
-            return@flatMap requestRemote.request(it.login1C!!, it.password1C!!, gson.toJson(data))
+            return@flatMap requestRemote.request(
+                it.login1C!!,
+                it.password1C!!,
+                gson.toJson(DataRequestLogin(password))
+            )
         }.flatMap {
             try {
                 Either.Right(gson.fromJson(it, AccountEntity::class.java))
@@ -32,5 +32,5 @@ class AccountRepositoryImpl(
         }
     }
 
-
+    class DataRequestLogin(val password: String, val command: String = "login")
 }

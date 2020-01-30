@@ -3,13 +3,16 @@ package `fun`.gladkikh.logisticcargo.di
 
 import `fun`.gladkikh.logisticcargo.cashe.SharedPrefsManager
 import `fun`.gladkikh.logisticcargo.domain.SettingsEntity
+import `fun`.gladkikh.logisticcargo.domain.settings.CheckSettings
 import `fun`.gladkikh.logisticcargo.domain.settings.SettingsRepository
 import `fun`.gladkikh.logisticcargo.repository.AccountRepository
 import `fun`.gladkikh.logisticcargo.repository.AccountRepositoryImpl
+import `fun`.gladkikh.logisticcargo.repository.SettingsCache
 import `fun`.gladkikh.logisticcargo.repository.SettingsRepositoryImpl
 import `fun`.gladkikh.remote.remote.RequestRemote
 import `fun`.gladkikh.remote.remote.RequestRemoteImpl
 import android.content.Context
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import java.util.*
@@ -26,7 +29,8 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideAccountRepository(): AccountRepository = AccountRepositoryImpl()
+    fun provideAccountRepository(settingsCache: SettingsCache,requestRemote: RequestRemote,gson:Gson): AccountRepository =
+        AccountRepositoryImpl(settingsCache,requestRemote,gson)
 
     @Provides
     @Singleton
